@@ -36,13 +36,44 @@ class concave(Scene):
         l2 = Line(graph.point_from_proportion(1/2), graph.point_from_proportion(1))
         l2.set_stroke(color=TEAL, width=3, opacity=1)
         group2 = Group(trace2, l2)
-        
         self.play(Create(l1), Create(l2))
-        
-        
         trace1.set_fill(color = YELLOW, opacity = 0.5)
         trace2.set_fill(color = TEAL, opacity = 0.5)
         self.wait()
         self.play(group1.animate.shift(UP*0.5), group2.animate.shift(DOWN*0.5))
         self.wait()
+        #horizontal = Line([0,0], [1,0])
+        rangle = l2.get_angle() 
+        print(rangle)
+        self.play(FadeOut(group1), group2.animate.rotate(PI - rangle))
+        self.wait()
+        a = Dot(color = WHITE).move_to(trace2.point_from_proportion(0))
+        b = Dot(color = WHITE).move_to(trace2.point_from_proportion(1))
+        A = Text("a").next_to(a, RIGHT)
+        B = Text("b").next_to(b, LEFT)
+        self.add(a,b,A,B)
+        self.wait() 
+        c = Dot(color = RED).move_to(trace2.point_from_proportion(0.5))
+        C = Text("c", color = RED).next_to(c, UP)
+        self.play(Create(c), Write(C))
+        self.wait()
+        l3 = Line(trace2.point_from_proportion(0), c, color = RED)
+        l4 = Line(trace2.point_from_proportion(1), c, color = RED)
+        self.play(Create(l3), Create(l4))
+        self.wait()
+        triangle = Polygon(trace2.point_from_proportion(0), c.get_center(), trace2.point_from_proportion(1), color = RED).set_fill(color = RED, opacity = 0.3)
+        self.add(triangle)
+        self.wait()
+        angle = Angle(l4,l3, radius = 0.5, quadrant = (-1,-1) ).set_color(WHITE)
+        value = DecimalNumber(angle.get_value(degrees=True), unit="^{\circ}")
+        value.next_to(angle, DOWN)
+        print(angle)
+        self.add(angle,value)
+        self.wait(2)
+
+
+
+
+        
+
         
